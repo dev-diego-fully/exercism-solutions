@@ -5,6 +5,22 @@ class NeedForSpeed {
     private int battery = 100;
     private int drivenDistance = 0;
 
+    public int getSpeed() {
+        return this.speed;
+    }
+
+    public int getBatteryDrain() {
+        return this.batteryDrain;
+    }
+
+    public int getBattery() {
+        return this.battery;
+    }
+
+    public int getDrivenDistance() {
+        return this.drivenDistance;
+    }
+
     NeedForSpeed(int speed, int batteryDrain) {
         this.speed = speed;
         this.batteryDrain = batteryDrain;
@@ -19,7 +35,7 @@ class NeedForSpeed {
     }
 
     public void drive() {
-        if(!this.batteryDrained()) {
+        if (!this.batteryDrained()) {
             this.drivenDistance += this.speed;
             this.battery -= this.batteryDrain;
         }
@@ -39,18 +55,8 @@ class RaceTrack {
     }
 
     public boolean tryFinishTrack(NeedForSpeed car) {
-        final int initialDistance = car.distanceDriven();
-        int drivenDistance = 0;
-        
-        while (drivenDistance < this.distance) {
-            if (car.batteryDrained()) {
-                return false;
-            }
-            car.drive();
-            drivenDistance = car.distanceDriven() - initialDistance;
-        }
-
-        return true;
-
+        final double carEfficiency = car.getBattery() / car.getBatteryDrain();
+        return carEfficiency * car.getSpeed() >= this.distance;
     }
+
 }
