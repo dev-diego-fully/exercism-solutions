@@ -2,10 +2,12 @@
 
 namespace scrabble_score {
 
-int score(char score);
+int score(char letter);
+bool contains(const std::string &list, char searched);
 
 int score(const std::string &word) {
   int sum = 0;
+
   for (char c : word) {
     sum += score(tolower(c));
   }
@@ -13,44 +15,29 @@ int score(const std::string &word) {
   return sum;
 }
 
-int score(char score) {
-  switch (score) {
-  case 'a':
-  case 'e':
-  case 'i':
-  case 'o':
-  case 'u':
-  case 'l':
-  case 'n':
-  case 'r':
-  case 's':
-  case 't':
-    return 1;
-  case 'd':
-  case 'g':
-    return 2;
-  case 'b':
-  case 'c':
-  case 'm':
-  case 'p':
-    return 3;
-  case 'f':
-  case 'h':
-  case 'v':
-  case 'w':
-  case 'y':
-    return 4;
-  case 'k':
-    return 5;
-  case 'j':
-  case 'x':
-    return 8;
-  case 'q':
-  case 'z':
-    return 10;
-  default:
-    return 0;
+const std::vector<std::pair<std::string, int>> scores = {
+    {"aeioulnrst", 1}, {"dg", 2}, {"bcmp", 3}, {"fhvwy", 4},
+    {"k", 5},          {"jx", 8}, {"qz", 10}};
+
+int score(char letter) {
+  for (std::pair<std::string, int> pair : scores) {
+    const std::string &list = pair.first;
+    int score = pair.second;
+    if (contains(list, letter)) {
+      return score;
+    }
   }
+
+  return 0;
+}
+
+bool contains(const std::string &list, const char searched) {
+  for (char c : list) {
+    if (c == searched) {
+      return true;
+    }
+  }
+  return false;
 }
 
 } // namespace scrabble_score

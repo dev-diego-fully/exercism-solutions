@@ -3,6 +3,7 @@
 
 #include <cctype>
 #include <string>
+#include <vector>
 
 namespace scrabble_score {
 
