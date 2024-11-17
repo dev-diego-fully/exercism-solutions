@@ -3,11 +3,10 @@
 namespace yacht {
 
 using dice_rolls = std::vector<short>;
+using score_calculator = std::function<short(const dice_rolls &)>;
 
-const short dice_face_numbers = 6;
-const short dice_on_roll = 5;
-
-bool has_category(const std::string &category);
+bool has_category(const std::map<std::string, score_calculator> &map,
+                  const std::string &category);
 short calculate_faces(const dice_rolls &dices, short face);
 short calculate_full_house(const dice_rolls &dices);
 short calculate_four_of_a_kind(const dice_rolls &dices);
@@ -16,34 +15,42 @@ short calculate_choice(const dice_rolls &dices);
 short calculate_yacht(const dice_rolls &dices);
 short face_count(const dice_rolls &dices, short face);
 
-const std::map<std::string, std::function<short(const dice_rolls &)>> modes = {
-    {"ones", std::bind(calculate_faces, std::placeholders::_1, 1)},
-    {"twos", std::bind(calculate_faces, std::placeholders::_1, 2)},
-    {"threes", std::bind(calculate_faces, std::placeholders::_1, 3)},
-    {"fours", std::bind(calculate_faces, std::placeholders::_1, 4)},
-    {"fives", std::bind(calculate_faces, std::placeholders::_1, 5)},
-    {"sixes", std::bind(calculate_faces, std::placeholders::_1, 6)},
+const std::map<std::string, score_calculator> category_to_calculator = {
+    {"ones", [](const dice_rolls &dices) { return calculate_faces(dices, 1); }},
+    {"twos", [](const dice_rolls &dices) { return calculate_faces(dices, 2); }},
+    {"threes",
+     [](const dice_rolls &dices) { return calculate_faces(dices, 3); }},
+    {"fours",
+     [](const dice_rolls &dices) { return calculate_faces(dices, 4); }},
+    {"fives",
+     [](const dice_rolls &dices) { return calculate_faces(dices, 5); }},
+    {"sixes",
+     [](const dice_rolls &dices) { return calculate_faces(dices, 6); }},
     {"full house", calculate_full_house},
     {"four of a kind", calculate_four_of_a_kind},
     {"little straight",
-     std::bind(calculate_straight, std::placeholders::_1, false)},
+     [](const dice_rolls &dices) { return calculate_straight(dices, false); }},
     {"big straight",
-     std::bind(calculate_straight, std::placeholders::_1, true)},
+     [](const dice_rolls &dices) { return calculate_straight(dices, true); }},
     {"choice", calculate_choice},
     {"yacht", calculate_yacht}};
 
 short score(const dice_rolls &dices, const std::string &category) {
   const short invalid_as_category = -1;
 
-  if (has_category(category)) {
-    return modes.at(category)(dices);
+  if (has_category(category_to_calculator, category)) {
+    return category_to_calculator.at(category)(dices);
   }
 
   return invalid_as_category;
 }
 
-bool has_category(const std::string &category) {
-  return modes.find(category) != modes.end();
+const short dice_face_numbers = 6;
+const short dice_on_roll = 5;
+
+bool has_category(const std::map<std::string, score_calculator> &map,
+                  const std::string &category) {
+  return map.find(category) != map.end();
 }
 
 short calculate_faces(const dice_rolls &dices, short face) {
