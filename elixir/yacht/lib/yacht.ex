@@ -17,62 +17,68 @@ defmodule Yacht do
   Calculate the score of 5 dice using the given category's scoring method.
   """
   @spec score(category :: category(), dice :: [integer]) :: integer
-  def score(category, dice)
+  def score(category, dice),
+    do: dice |> Enum.sort() |> then(fn dice -> do_score(category, dice) end)
 
-  def score(:ones, dice),
+  defp do_score(:ones, dice),
     do: dice |> face_scores(1)
 
-  def score(:twos, dice),
+  defp do_score(:twos, dice),
     do: dice |> face_scores(2)
 
-  def score(:threes, dice),
+  defp do_score(:threes, dice),
     do: dice |> face_scores(3)
 
-  def score(:fours, dice),
+  defp do_score(:fours, dice),
     do: dice |> face_scores(4)
 
-  def score(:fives, dice),
+  defp do_score(:fives, dice),
     do: dice |> face_scores(5)
 
-  def score(:sixes, dice),
+  defp do_score(:sixes, dice),
     do: dice |> face_scores(6)
 
-  def score(:full_house, dice) do
-    case Enum.sort(dice) do
-      [roll, _, _, _, roll] -> 0
-      [lesser, lesser, lesser, greater, greater] -> 3 * lesser + 2 * greater
-      [lesser, lesser, greater, greater, greater] -> 2 * lesser + 3 * greater
-      _ -> 0
-    end
-  end
+  defp do_score(:full_house, [roll, _, _, _, roll]),
+    do: 0
 
-  def score(:four_of_a_kind, dice) do
-    case Enum.sort(dice) do
-      [roll, roll, roll, roll, _] -> 4 * roll
-      [_, roll, roll, roll, roll] -> 4 * roll
-      _ -> 0
-    end
-  end
+  defp do_score(:full_house, [lesser, lesser, lesser, greater, greater]),
+    do: 3 * lesser + 2 * greater
 
-  def score(:choice, dice),
+  defp do_score(:full_house, [lesser, lesser, greater, greater, greater]),
+    do: 2 * lesser + 3 * greater
+
+  defp do_score(:full_house, _),
+    do: 0
+
+  defp do_score(:four_of_a_kind, [roll, roll, roll, roll, _]),
+    do: 4 * roll
+
+  defp do_score(:four_of_a_kind, [_, roll, roll, roll, roll]),
+    do: 4 * roll
+
+  defp do_score(:four_of_a_kind, _),
+    do: 0
+
+  defp do_score(:choice, dice),
     do: dice |> Enum.sum()
 
-  def score(:little_straight, dice) do
-    case Enum.sort(dice) do
-      [1, 2, 3, 4, 5] -> 30
-      _ -> 0
-    end
-  end
+  defp do_score(:little_straight, [1, 2, 3, 4, 5]),
+    do: 30
 
-  def score(:big_straight, dice) do
-    case Enum.sort(dice) do
-      [2, 3, 4, 5, 6] -> 30
-      _ -> 0
-    end
-  end
+  defp do_score(:little_straight, _),
+    do: 0
 
-  def score(:yacht, [roll, roll, roll, roll, roll]), do: 50
-  def score(:yacht, _), do: 0
+  defp do_score(:big_straight, [2, 3, 4, 5, 6]),
+    do: 30
+
+  defp do_score(:big_straight, _),
+    do: 0
+
+  defp do_score(:yacht, [roll, roll, roll, roll, roll]),
+    do: 50
+
+  defp do_score(:yacht, _),
+    do: 0
 
   defp face_scores(dice, face),
     do: dice |> face_count(face) |> (&*/2).(face)
