@@ -7,52 +7,43 @@ using dice_rolls = std::vector<short>;
 const short dice_face_numbers = 6;
 const short dice_on_roll = 5;
 
-short face_count(const dice_rolls &dices, short face);
+bool has_category(const std::string &category);
 short calculate_faces(const dice_rolls &dices, short face);
 short calculate_full_house(const dice_rolls &dices);
 short calculate_four_of_a_kind(const dice_rolls &dices);
 short calculate_straight(const dice_rolls &dices, bool is_big);
 short calculate_choice(const dice_rolls &dices);
 short calculate_yacht(const dice_rolls &dices);
+short face_count(const dice_rolls &dices, short face);
+
+const std::map<std::string, std::function<short(const dice_rolls &)>> modes = {
+    {"ones", std::bind(calculate_faces, std::placeholders::_1, 1)},
+    {"twos", std::bind(calculate_faces, std::placeholders::_1, 2)},
+    {"threes", std::bind(calculate_faces, std::placeholders::_1, 3)},
+    {"fours", std::bind(calculate_faces, std::placeholders::_1, 4)},
+    {"fives", std::bind(calculate_faces, std::placeholders::_1, 5)},
+    {"sixes", std::bind(calculate_faces, std::placeholders::_1, 6)},
+    {"full house", calculate_full_house},
+    {"four of a kind", calculate_four_of_a_kind},
+    {"little straight",
+     std::bind(calculate_straight, std::placeholders::_1, false)},
+    {"big straight",
+     std::bind(calculate_straight, std::placeholders::_1, true)},
+    {"choice", calculate_choice},
+    {"yacht", calculate_yacht}};
 
 short score(const dice_rolls &dices, const std::string &category) {
-  if (category == "ones") {
-    return calculate_faces(dices, 1);
+  const short invalid_as_category = -1;
+
+  if (has_category(category)) {
+    return modes.at(category)(dices);
   }
-  if (category == "twos") {
-    return calculate_faces(dices, 2);
-  }
-  if (category == "threes") {
-    return calculate_faces(dices, 3);
-  }
-  if (category == "fours") {
-    return calculate_faces(dices, 4);
-  }
-  if (category == "fives") {
-    return calculate_faces(dices, 5);
-  }
-  if (category == "sixes") {
-    return calculate_faces(dices, 6);
-  }
-  if (category == "full house") {
-    return calculate_full_house(dices);
-  }
-  if (category == "four of a kind") {
-    return calculate_four_of_a_kind(dices);
-  }
-  if (category == "little straight") {
-    return calculate_straight(dices, false);
-  }
-  if (category == "big straight") {
-    return calculate_straight(dices, true);
-  }
-  if (category == "choice") {
-    return calculate_choice(dices);
-  }
-  if (category == "yacht") {
-    return calculate_yacht(dices);
-  }
-  return -1;
+
+  return invalid_as_category;
+}
+
+bool has_category(const std::string &category) {
+  return modes.find(category) != modes.end();
 }
 
 short calculate_faces(const dice_rolls &dices, short face) {
