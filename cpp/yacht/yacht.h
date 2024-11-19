@@ -1,12 +1,15 @@
 #pragma once
 
+#include <algorithm>
+#include <array>
 #include <functional>
-#include <map>
+#include <numeric>
+#include <optional>
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 namespace yacht {
 
-short score(const std::vector<short> &dices, const std::string &category);
+short score(const std::array<short, 5> &dices, const std::string &category);
 
 } // namespace yacht
