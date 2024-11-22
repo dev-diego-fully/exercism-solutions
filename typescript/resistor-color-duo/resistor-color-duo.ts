@@ -1,15 +1,15 @@
 export function decodedValue([a, b]: Array<(typeof COLORS)[number]>): number {
-  const invalid_color_code = -1;
+  const invalidResistorColor = -1;
   let [valueA, valueB] = [COLORS.indexOf(a), COLORS.indexOf(b)];
 
-  if (valueA != invalid_color_code && valueB != invalid_color_code) {
+  if (valueA != invalidResistorColor && valueB != invalidResistorColor) {
     return valueA * 10 + valueB;
   }
 
-  return invalid_color_code;
+  return invalidResistorColor;
 }
 
-export const COLORS = [
+const COLORS = [
   "black",
   "brown",
   "red",
