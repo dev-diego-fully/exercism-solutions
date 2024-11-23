@@ -5,17 +5,19 @@ export function toRna(strand: string): string {
     .join("");
 }
 
+const DNA_TO_RNA: Record<string, string> = {
+  C: "G",
+  G: "C",
+  A: "U",
+  T: "A"
+} as const
+
 function fromDnaToRna(nucleotide: string): string {
-  switch(nucleotide) {
-    case "C":
-      return "G";
-    case "G":
-      return "C";
-    case "A":
-      return "U";
-    case "T":
-      return "A";
-    default:
-      throw "Invalid input DNA.";
+  const translated = DNA_TO_RNA[nucleotide];
+  
+  if(translated) {
+    return translated;
   }
+  
+  throw "Invalid input DNA.";
 }
