@@ -19,5 +19,5 @@ function fromDnaToRna(nucleotide: string): string {
     return translated;
   }
   
-  throw "Invalid input DNA.";
+  throw new Error("Invalid input DNA.");
 }
