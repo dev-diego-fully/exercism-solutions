@@ -7,7 +7,7 @@ export function score(x: number, y: number): number {
 }
 
 function distanceFromCenter(x: number, y: number): number {
-  return Math.sqrt(x ** 2 + y ** 2);
+  return (x ** 2 + y ** 2) ** (1 / 2);
 }
 
 const targetCircles = {
