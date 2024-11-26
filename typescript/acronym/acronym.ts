@@ -9,7 +9,7 @@ export function parse(phrase: string): string {
 function pushIfInitial(
   queue: { initials: string[]; last: string },
   char: string
-) {
+): { initials: string[]; last: string } {
   if (
     isSeparator(queue.last) ||
     (isLowerCase(queue.last) && isUpperCase(char))
@@ -21,13 +21,19 @@ function pushIfInitial(
 }
 
 function isLowerCase(str: string): boolean {
-  return /[a-z]/.test(str);
+  return patterns.lowerCase.test(str);
 }
 
 function isUpperCase(str: string): boolean {
-  return /[A-Z]/.test(str);
+  return patterns.upperCase.test(str);
 }
 
 function isSeparator(str: string): boolean {
-  return /[\s\-]/.test(str);
+  return patterns.separator.test(str);
 }
+
+const patterns = {
+  lowerCase: /[a-z]/,
+  upperCase: /[A-Z]/,
+  separator: /[\s\-]/,
+} as const;
