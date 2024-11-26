@@ -4,7 +4,7 @@ export class Anagram {
 
   constructor(input: string) {
     this.word = input.toLowerCase();
-    this.sorted = this.word.split("").sort().join("");
+    this.sorted = this.sortedCharsAsString(this.word);
   }
 
   public matches(...potentials: string[]): string[] {
@@ -17,7 +17,11 @@ export class Anagram {
       return false;
     }
 
-    const chars = normalized.split("").sort().join("");
+    const chars = this.sortedCharsAsString(normalized);
     return chars === this.sorted;
+  }
+
+  private sortedCharsAsString(input: string) {
+    return input.split("").sort().join("");
   }
 }
