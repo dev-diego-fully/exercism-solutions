@@ -1,14 +1,10 @@
 export function transform(
   old: Record<number, string[]>
 ): Record<string, number> {
-  const transformed: Record<string, number> = {};
-
-  for (const key in old) {
-    const numKey = Number(key);
-    for (const score of old[numKey]) {
-      transformed[score.toLowerCase()] = numKey;
-    }
-  }
-
-  return transformed;
+  return Object.fromEntries(
+    Object.entries(old).flatMap(([key, value]) => {
+      const numKey = Number(key);
+      return value.map((val) => [val.toLowerCase(), numKey]);
+    })
+  );
 }
