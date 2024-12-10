@@ -2,19 +2,16 @@ import java.util.stream.IntStream;
 
 public class PangramChecker {
 
-    private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+    private static final String notLetterPattern = "[^a-zA-Z]";
+    private static final int alphabetSize = 26;
 
     public boolean isPangram(String input) {
-        final String lowered = input.toLowerCase();
-
-        return alphabet
+        return input
+                .replaceAll(notLetterPattern, "")
+                .toLowerCase()
                 .chars()
-                .allMatch((letter) -> this.hasChar(lowered, letter));
-    }
-
-    private boolean hasChar(String tested, int chr) {
-        final int notFound = -1;
-        return tested.indexOf(chr) != notFound;
+                .distinct()
+                .count() == alphabetSize;
     }
 
 }
