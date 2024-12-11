@@ -4,7 +4,7 @@ class ResistorColorDuo {
 
     public int value(String[] colors) {
         if (colors.length < 2) {
-            throw new IllegalArgumentException("Banana.");
+            throw new IllegalArgumentException("Invalid colors count.");
         }
 
         final int ten = colorValue(colors[0]);
