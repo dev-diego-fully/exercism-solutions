@@ -1,7 +1,5 @@
 import java.util.Map;
 
-import main.java.SolarSystemPlanet;
-
 class SpaceAge {
 
     public SpaceAge(double seconds) {

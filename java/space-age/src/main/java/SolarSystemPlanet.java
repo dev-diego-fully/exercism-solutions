@@ -1,5 +1,3 @@
-package main.java;
-
 public enum SolarSystemPlanet {
 
     MERCURY(0.2408467),
