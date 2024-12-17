@@ -1,5 +1,3 @@
-import main.java.Resistor;
-
 class ResistorColorTrio {
 
     public String label(String[] resistorColors) {
