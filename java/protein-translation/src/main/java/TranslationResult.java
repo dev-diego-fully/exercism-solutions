@@ -2,8 +2,6 @@ package main.java;
 
 import java.util.Map;
 
-import javax.swing.tree.TreeNode;
-
 public enum TranslationResult {
 
     METHIONINE,
