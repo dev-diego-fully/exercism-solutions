@@ -1,6 +1,5 @@
-package main.java;
-
 import java.util.Map;
+
 
 public enum TranslationResult {
 

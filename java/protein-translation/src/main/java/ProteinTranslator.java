@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
-import main.java.TranslationResult;
+
 
 class ProteinTranslator {
 
