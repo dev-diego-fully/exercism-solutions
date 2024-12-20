@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class MetricResistance {
+class MetricResistance {
 
     public static MetricResistance fromOhms(long ohms) {
         return new MetricResistance(ohms);

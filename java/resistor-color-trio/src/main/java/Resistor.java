@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Resistor {
+class Resistor {
 
     public static Resistor fromColors(String a, String b, String c) {
         final int ten = codeOf(a);
