@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class GroupedDigitsNumber {
+class GroupedDigitsNumber {
 
     public GroupedDigitsNumber(long number) {
         this.number = number;

@@ -1,7 +1,6 @@
 import java.util.Map;
 
-
-public enum TranslationResult {
+enum TranslationResult {
 
     METHIONINE,
     PHENYLALANINE,

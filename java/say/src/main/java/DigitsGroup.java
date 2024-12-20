@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class DigitsGroup {
+class DigitsGroup {
 
     public DigitsGroup(List<Integer> digits, int groupPosition, int groupsCount) {
         this.digits = digits.subList(0, GROUP_SIZE);

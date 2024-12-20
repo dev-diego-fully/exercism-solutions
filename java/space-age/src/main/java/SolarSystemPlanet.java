@@ -1,4 +1,4 @@
-public enum SolarSystemPlanet {
+enum SolarSystemPlanet {
 
     MERCURY(0.2408467),
     VENUS(0.61519726),

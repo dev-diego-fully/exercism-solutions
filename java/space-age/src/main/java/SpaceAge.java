@@ -1,5 +1,3 @@
-import java.util.Map;
-
 class SpaceAge {
 
     public SpaceAge(double seconds) {

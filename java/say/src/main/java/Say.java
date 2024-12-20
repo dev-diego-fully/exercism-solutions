@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Say {
+class Say {
 
     public String say(long number) {
         if (number < MIN_VALUE || number >= MAX_VALUE) {
