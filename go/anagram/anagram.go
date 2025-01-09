@@ -1,3 +1,4 @@
+// Package anagram provides functions to detect anagrams in a list of candidates.
 package anagram
 
 import (
