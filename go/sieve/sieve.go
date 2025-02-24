@@ -1,7 +1,7 @@
-// Package sieve provides functions to generate prime numbers using the Sieve of Eratosthenes.
+// Package sieve implements the Sieve of Eratosthenes to generate prime numbers.
 package sieve
 
-// Sieve returns a list of prime numbers up to the given limit.
+// Sieve returns all prime numbers up to the given limit.
 func Sieve(limit int) []int {
 	if limit < firstPrime {
 		return nil
@@ -11,8 +11,8 @@ func Sieve(limit int) []int {
 
 	for index, rejected := range candidatesStatus {
 		if !rejected {
-			candidatesStatus = rejectMultiplies(
-				candidatesStatus, candidateFromIndex(index),
+			rejectMultiplies(
+				&candidatesStatus, candidateFromIndex(index),
 			)
 		}
 	}
@@ -27,23 +27,23 @@ func Sieve(limit int) []int {
 	return primes
 }
 
-// rejectMultiplies marks multiples of the given divisor as non-prime.
-func rejectMultiplies(status []bool, divisor int) []bool {
+// rejectMultiplies marks multiples of the given divisor as non-prime
+// in the sieve.
+func rejectMultiplies(status *[]bool, divisor int) {
 	first := indexOfCandidate(divisor * divisor)
 
-	for i := first; i < len(status); i += divisor {
-		status[i] = true
+	for i := first; i < len(*status); i += divisor {
+		(*status)[i] = true
 	}
-
-	return status
 }
 
-// indexOfCandidate returns the index of a candidate number in the sieve.
+// indexOfCandidate returns the index of a number in the sieve array.
 func indexOfCandidate(value int) int {
 	return value - firstPrime
 }
 
-// candidateFromIndex returns the number corresponding to a given index in the sieve.
+// candidateFromIndex returns the number corresponding to the
+// given index in the sieve array.
 func candidateFromIndex(index int) int {
 	return firstPrime + index
 }
