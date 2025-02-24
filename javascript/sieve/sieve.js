@@ -10,7 +10,8 @@ export const primes = (limit) => {
     .from(Array(limit + 1).keys())
     .splice(2);
   
-  for(const num of candidates) {
+  for(let i = 0; i < candidates.length; i++) {
+    const num = candidates[i]
     candidates = candidates.filter((candidate) => num == candidate || candidate % num != 0);
   }
 
