@@ -1,3 +1,7 @@
+/**
+ * @file parallel_letter_frequency.cpp
+ * @brief Implementation of optimized parallel frequency counter
+ */
 #include "bank_account.h"
 
 namespace Bankaccount
