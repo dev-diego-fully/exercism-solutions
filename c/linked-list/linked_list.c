@@ -71,7 +71,6 @@ ll_data_t list_pop(list_t *list) {
 
   list_node_t *popped = list->last;
   const ll_data_t popped_data = popped->data;
-  // printf("Popping: %d\n", popped_data);
 
   if (list_is_single(list)) {
     list->first = NULL;
@@ -84,6 +83,7 @@ ll_data_t list_pop(list_t *list) {
   node_destroy(popped);
   return popped_data;
 }
+
 // removes item from front of a list
 ll_data_t list_shift(list_t *list) {
   if (!list || list_is_empty(list)) {
