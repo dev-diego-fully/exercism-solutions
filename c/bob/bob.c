@@ -24,7 +24,7 @@ int not_space(int chr);
 
 // Sends a message to Bob and returns his response.
 const char *hey_bob(const char *greeting) {
-  if (is_silence(greeting)) {
+  if (!greeting || is_silence(greeting)) {
     return BOB_RESPONSES[SILENCE];
   }
 
