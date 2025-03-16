@@ -6,10 +6,12 @@ namespace queen_attack {
 
 chess_board::chess_board(const coord &white, const coord &black) {
   if (!valid_position(white) || !valid_position(black)) {
-    throw std::domain_error("Invalid pieces position");
+    throw std::domain_error(
+        "Invalid Position: Queens are outside the board boundaries.");
   }
   if (white == black) {
-    throw std::domain_error("Pieces can't be in same place");
+    throw std::domain_error(
+        "Invalid Position: The two queens cannot occupy the same space.");
   }
   this->_white = white;
   this->_black = black;
