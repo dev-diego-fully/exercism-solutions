@@ -1,18 +1,18 @@
 /// Tries to return the digits of the passed luhn code. Returns None
 /// if the code is not minimally valid (has invalid characters,
 /// is not long enough), otherwise, returns a Some containing the digits.
-pub(crate) fn get_digits(code: &str) -> Option<Vec<u8>> {
+pub(crate) fn get_digits(code: &str) -> Option<impl DoubleEndedIterator<Item = u8> + Clone + '_> {
     if !has_only_valid_chars(code) {
         return None;
     }
-    let digits: Vec<u8> = code
+    let digits= code
         .bytes()
-        .filter_map(parse_digit)
-        .collect();
+        .filter_map(parse_digit);
 
-    if digits.len() <= 1 {
+    if digits.clone().count() <= 1 {
         return None;
     }
+
     Some(digits)
 }
 
