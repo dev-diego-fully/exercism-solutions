@@ -2,17 +2,18 @@ import java.util.Map;
 
 class NucleotideCounter {
 
-    private final ItemCounter<Character> counter;
+    private final Map<Character, Integer> counter;
 
     NucleotideCounter(String sequence) {
-        this.counter = new ItemCounter<>(DNAParser.NUCLEOTIDES);
+        ItemCounter<Character> counter = new ItemCounter<>(DNAParser.NUCLEOTIDES);
         DNAParser
                 .nucleotidesOf(sequence)
-                .forEach(this.counter::countItem);
+                .forEach(counter::countItem);
+        this.counter = counter.asMap();
     }
 
     Map<Character, Integer> nucleotideCounts() {
-        return this.counter.asMap();
+        return this.counter;
     }
 
 }

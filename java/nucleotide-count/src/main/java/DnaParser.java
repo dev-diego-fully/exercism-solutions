@@ -3,7 +3,7 @@ import java.util.Set;
 
 class DNAParser {
 
-    public static Set<Character> NUCLEOTIDES = Set.of('A', 'T', 'C', 'G');
+    public static final Set<Character> NUCLEOTIDES = Set.of('A', 'T', 'C', 'G');
 
     static Stream<Character> nucleotidesOf(String sequence) throws IllegalArgumentException {
         if (!DNAParser.isDna(sequence)) {

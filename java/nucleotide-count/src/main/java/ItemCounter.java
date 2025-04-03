@@ -13,7 +13,7 @@ class ItemCounter<T> {
     }
 
     void countItem(T item) {
-        this.counter.replace(item, this.counter.get(item) + 1);
+        this.counter.merge(item, 1, Integer::sum);
     }
 
     Map<T, Integer> asMap() {
