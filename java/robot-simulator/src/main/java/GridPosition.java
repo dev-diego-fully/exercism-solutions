@@ -1,9 +1,7 @@
 class GridPosition {
-
     final int x;
-
     final int y;
-
+    
     GridPosition(final int x, final int y) {
         this.x = x;
         this.y = y;
@@ -29,29 +27,5 @@ class GridPosition {
         } else {
             return true;
         }
-    }
-
-    GridPosition increaseadX() {
-        return new GridPosition(
-                this.x + 1,
-                this.y);
-    }
-
-    GridPosition increaseadY() {
-        return new GridPosition(
-                this.x,
-                this.y + 1);
-    }
-
-    GridPosition decreasedX() {
-        return new GridPosition(
-                this.x - 1,
-                this.y);
-    }
-
-    GridPosition decreasedY() {
-        return new GridPosition(
-                this.x,
-                this.y - 1);
     }
 }
