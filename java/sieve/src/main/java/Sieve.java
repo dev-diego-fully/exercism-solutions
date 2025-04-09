@@ -37,7 +37,7 @@ class Sieve {
 
     private IntStream multipliesOf(int value) {
         return IntStream
-                .rangeClosed(2, this.maxPrime / value)
+                .rangeClosed(value, this.maxPrime / value)
                 .map(i -> i * value);
     }
 
