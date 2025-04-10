@@ -6,23 +6,26 @@ import java.util.Set;
 class Sieve {
 
     private final int maxPrime;
-    private final List<Integer> primes;
+    private List<Integer> primes;
     private Set<Integer> nonPrimes;
 
     Sieve(int maxPrime) {
         this.maxPrime = maxPrime;
         this.nonPrimes = new HashSet<>();
+    }
 
+    List<Integer> getPrimes() {
+        if (this.primes != null) {
+            return this.primes;
+        }
+        
         this.primes = IntStream
                 .rangeClosed(2, maxPrime)
                 .filter(this::isPrime)
                 .boxed()
                 .toList();
-        
         this.nonPrimes = null;
-    }
 
-    List<Integer> getPrimes() {
         return this.primes;
     }
 
