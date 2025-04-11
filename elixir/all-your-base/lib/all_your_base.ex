@@ -1,48 +1,107 @@
 defmodule AllYourBase do
+
+  @smallest_base 2
+  @smallest_digit 0
+  @min_digits 1
+  @min_defined_log 1
+
   @doc """
   Given a number in input base, represented as a sequence of digits, converts it to output base,
   or returns an error tuple if either of the bases are less than 2
   """
-
   @spec convert(list, integer, integer) :: {:ok, list} | {:error, String.t()}
   def convert(digits, input_base, output_base)
 
-  def convert(_, input_base, _) when input_base < 2,
+  # invalid input base
+  def convert(_, input_base, _) when input_base < @smallest_base,
     do: {:error, "input base must be >= 2"}
 
-  def convert(_, _, output_base) when output_base < 2,
+  # invalid output base
+  def convert(_, _, output_base) when output_base < @smallest_base,
     do: {:error, "output base must be >= 2"}
 
-  def convert([], _, _), do: {:ok, [0]}
+  # without digits is treated as zero in all bases
+  def convert([], _, _),
+    do: {:ok, [0]}
 
-  def convert(digits, same_base, same_base),
-    do: {:ok, digits}
-
-  def convert(digits, input_base, output_base) do
-    if Enum.any?(digits, fn d -> d < 0 or d >= input_base end) do
-      {:error, "all digits must be >= 0 and < input base"}
+  # attempt to convert to the same base
+  def convert(digits, same_base, same_base) do
+    if valid_number?(digits, same_base) do
+      {:ok, digits}
     else
-      {:ok,
-       value_of(digits, input_base)
-       |> convert_number(output_base)}
+      {:error, "all digits must be >= 0 and < input base"}
     end
   end
 
-  defp value_of(digits, base) do
-    Enum.zip((length(digits) - 1)..0, digits)
-    |> Enum.map(fn {k, d} -> digit_value(d, base, k) end)
+  # commom case
+  def convert(digits, input_base, output_base) do
+    if !valid_number?(digits, input_base) do
+      {:error, "all digits must be >= 0 and < input base"}
+    else
+      {
+        :ok,
+        digits
+        |> digits_to_value(input_base)
+        |> value_to_digits(output_base)
+      }
+    end
+  end
+
+  # Obtains the real value of the positional representation
+  # given by the digits and the base.
+  @spec digits_to_value([integer], integer) :: integer
+  defp digits_to_value(digits, base) do
+    digits
+    |> Enum.reverse()
+    |> Stream.with_index()
+    |> Stream.map(digit_value_getter(base))
     |> Enum.reduce(&+/2)
   end
 
-  defp convert_number(number, base, digits \\ [])
+  # Converts the given value to its positional representation
+  # in the given base.
+  @spec value_to_digits(integer, integer) :: [integer]
+  defp value_to_digits(value, base) do
+    number_of_digits_in_base(value, base)-1..0//-1
+    |> Stream.map(fn pow -> Integer.pow(base, pow) end)
+    |> Stream.map(fn base_pows -> Integer.floor_div(value, base_pows) end)
+    |> Enum.map(fn val -> rem(val, base) end)
+  end
 
-  defp convert_number(0, _, []), do: [0]
+  # Calculates and returns the number of digits required to represent
+  # the given value in the given base.
+  @spec number_of_digits_in_base(integer, integer) :: integer
+  defp number_of_digits_in_base(value, base)
 
-  defp convert_number(0, _, digits), do: digits
+  #special logs value
+  defp number_of_digits_in_base(value, _) when value <= @min_defined_log,
+    do: @min_digits
 
-  defp convert_number(number, base, digits),
-    do: convert_number(floor(number / base), base, [rem(number, base) | digits])
+  #common case
+  defp number_of_digits_in_base(value, base) do
+    log_in_base = :math.log(value) / :math.log(base)
+    log_in_base
+    |> Float.ceil()
+    |> trunc()
+  end
 
-  defp digit_value(digit, base, position),
-    do: digit * Integer.pow(base, position)
+  # Checks and returns whether the digits are valid with a number in the given base.
+  @spec valid_number?([integer], integer) :: boolean
+  defp valid_number?(digits, base),
+    do: Enum.all?(digits, digit_checker(base))
+
+  # returns a closure that checks whether the given digit is
+  # valid for the base in which it was constructed.
+  @spec digit_checker(integer) :: (integer -> boolean)
+  defp digit_checker(base),
+    do: fn digit -> digit >= @smallest_digit and digit < base end
+
+  # Returns a closure that returns the value of a given digit at the
+  # given position based on the base used to construct the closure.
+  @spec digit_value_getter(integer) :: ({integer, integer} -> integer)
+  defp digit_value_getter(base) do
+    fn {digit, position} ->
+      digit * Integer.pow(base, position)
+    end
+  end
 end
