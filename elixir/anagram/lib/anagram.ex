@@ -4,18 +4,27 @@ defmodule Anagram do
   """
   @spec match(String.t(), [String.t()]) :: [String.t()]
   def match(base, candidates) do
-    base_chars = characteres(base)
-    lower_base = String.downcase(base)
-    anagram_of_base? = fn s ->
-      String.downcase(s) != lower_base and characteres(s) == base_chars
-    end
     candidates
-    |> Enum.filter(anagram_of_base?)
+    |> Enum.filter(anagram_checker(base))
   end
 
-  defp characteres(string) do
+  # Returns a closure that checks whether a given string is an anagram
+  # of the string used to construct this closure.
+  @spec anagram_checker(String.t()) :: (String.t() -> boolean)
+  defp anagram_checker(base) do
+    lowered_base = String.downcase(base)
+    base_chars = sorted_chars(lowered_base)
+
+    fn str ->
+      lowered = String.downcase(str)
+      lowered != lowered_base && sorted_chars(lowered) == base_chars
+    end
+  end
+
+  # Returns a copy of the given string with all its characters sorted.
+  @spec sorted_chars(String.t()) :: [String.t()]
+  defp sorted_chars(string) do
     string
-    |> String.downcase()
     |> String.split("")
     |> Enum.sort()
   end
