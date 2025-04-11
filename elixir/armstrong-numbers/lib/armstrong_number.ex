@@ -18,7 +18,7 @@ defmodule ArmstrongNumber do
     |> armstrong_digit_powerator()
 
     digits
-    |>Stream.map(powerate_digit)
+    |> Stream.map(powerate_digit)
     |> Enum.sum()
   end
 
