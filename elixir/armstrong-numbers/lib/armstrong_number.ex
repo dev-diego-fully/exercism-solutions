@@ -13,9 +13,11 @@ defmodule ArmstrongNumber do
   @spec armstrong_sum(integer) :: integer
   defp armstrong_sum(number) do
     digits = Integer.digits(number)
-    powerate_digit = digits
-    |> length()
-    |> armstrong_digit_powerator()
+
+    powerate_digit =
+      digits
+      |> length()
+      |> armstrong_digit_powerator()
 
     digits
     |> Stream.map(powerate_digit)
@@ -30,5 +32,4 @@ defmodule ArmstrongNumber do
       digit ** digits_count
     end
   end
-
 end
