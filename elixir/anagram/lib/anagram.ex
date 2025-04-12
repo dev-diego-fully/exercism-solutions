@@ -22,10 +22,10 @@ defmodule Anagram do
   end
 
   # Returns a copy of the given string with all its characters sorted.
-  @spec sorted_chars(String.t()) :: [String.t()]
+  @spec sorted_chars(String.t()) :: charlist()
   defp sorted_chars(string) do
     string
-    |> String.split("")
+    |> String.to_charlist()
     |> Enum.sort()
   end
 end
