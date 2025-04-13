@@ -1,49 +1,49 @@
 defmodule KitchenCalculator do
-  def get_volume( { _unit, value } = _volume_pair ) do
-    value
-  end
+  @type unit :: :milliliter | :cup | :fluid_once | :teaspoon | :tablespoon
+  @type measure :: {unit(), number()}
 
-  def to_milliliter( { :milliliter, _ } = volume_pair ) do
+  @conversion_rate %{
+    cup: 240,
+    fluid_ounce: 30,
+    teaspoon: 5,
+    tablespoon: 15
+  }
+
+  @doc """
+  Gets the volume value of the given measure.
+  """
+  @spec get_volume(measure()) :: number()
+  def get_volume({_, volume}),
+    do: volume
+
+  @doc """
+  Converts the given measure to a measure in milliliters.
+  """
+  @spec to_milliliter(measure()) :: measure()
+  def to_milliliter({:milliliter, _} = volume_pair),
+    do: volume_pair
+
+  def to_milliliter({unit, volume}),
+    do: {:milliliter, volume * @conversion_rate[unit]}
+
+  @doc """
+  Converts a measure given in milliliters to a measure in
+  the given unit.
+  """
+  @spec from_milliliter(measure(), unit()) :: measure()
+  def from_milliliter({:milliliter, _} = volume_pair, :milliliter),
+    do: volume_pair
+
+  def from_milliliter({_, volume}, unit),
+    do: {unit, volume / @conversion_rate[unit]}
+
+  @doc """
+  Converts a measurement given in any unit to the given unit.
+  """
+  @spec convert(measure(), unit()) :: measure()
+  def convert(volume_pair, unit) do
     volume_pair
-  end
-
-  def to_milliliter( { :cup, value } = _volume_pair ) do
-    { :milliliter, value * 240 }
-  end
-
-  def to_milliliter( { :fluid_ounce, value } = _volume_pair ) do
-    { :milliliter, value * 30 }
-  end
-
-  def to_milliliter( { :teaspoon, value } = _volume_pair ) do
-    { :milliliter, value * 5 }
-  end
-
-  def to_milliliter( { :tablespoon, value } = _volume_pair ) do
-    { :milliliter, value * 15 }
-  end
-
-  def from_milliliter( { :milliliter, _ } = volume_pair, _ = :milliliter ) do
-    volume_pair
-  end
-
-  def from_milliliter( { :milliliter, value } = _volume_pair, unit = :cup ) do
-    { unit, value / 240 }
-  end
-
-  def from_milliliter( { :milliliter, value } = _volume_pair, unit = :fluid_ounce ) do
-    { unit, value / 30 }
-  end
-
-  def from_milliliter( { :milliliter, value } = _volume_pair, unit = :teaspoon ) do
-    { unit, value / 5 }
-  end
-
-  def from_milliliter( { :milliliter, value } = _volume_pair, unit = :tablespoon ) do
-    { unit, value / 15 }
-  end
-
-  def convert( volume_pair, unit ) do
-    from_milliliter( to_milliliter( volume_pair ), unit )
+    |> to_milliliter()
+    |> from_milliliter(unit)
   end
 end
