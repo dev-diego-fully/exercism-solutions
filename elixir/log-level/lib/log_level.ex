@@ -2,7 +2,7 @@ defmodule LogLevel do
   @type log_label :: :trace | :debug | :info | :warning | :error | :fatal | :unknown
   @type recipient :: :ops | :dev1 | :dev2
 
-  @missing_legacy_leves [0, 5]
+  @missing_legacy_levels [0, 5]
 
   @doc """
   Returns a log_label appropriate for the given log level and whether
@@ -52,7 +52,7 @@ defmodule LogLevel do
   @spec legacy_label(integer) :: log_label
   defp legacy_label(level) do
     cond do
-      level in @missing_legacy_leves -> :unknown
+      level in @missing_legacy_levels -> :unknown
       true -> level |> modern_label()
     end
   end
