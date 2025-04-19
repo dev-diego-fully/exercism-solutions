@@ -1,5 +1,13 @@
 defmodule WineCellar do
-  def explain_colors do
+
+  @type cellar :: {String.t(), integer, String.t()}
+
+  @doc """
+  Returns a keyword list containing an explanation of each type of
+  wine color.
+  """
+  @spec explain_colors() :: Keyword.t(String.t())
+  def explain_colors() do
     [
       white: "Fermented without skin contact.",
       red: "Fermented with skin contact using dark-colored grapes.",
@@ -7,10 +15,15 @@ defmodule WineCellar do
     ]
   end
 
+  @doc """
+  Filters the wines from the given cellar that have the color and
+  optionally the year and country (by the opts keyword).
+  """
+  @spec filter(cellar, atom(), Keyword.t(String.t() | integer())) :: cellar()
   def filter(cellar, color, opts \\ []) do
     Keyword.get_values(cellar, color)
-    |> filter_by_year(Keyword.get(opts, :year))
-    |> filter_by_country(Keyword.get(opts, :country))
+    |> filter_by_year(opts |> Keyword.get(:year))
+    |> filter_by_country(opts |> Keyword.get(:country))
   end
 
   # The functions below do not need to be modified.
