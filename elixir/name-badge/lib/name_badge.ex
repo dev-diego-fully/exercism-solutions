@@ -23,10 +23,12 @@ defmodule NameBadge do
     end
   end
 
+  # Prints the default badge when the id is present.
   @spec print_with_id(integer, String.t(), String.t()) :: String.t()
   defp print_with_id(id, name, department),
     do: "[#{id}] - #{name} - #{String.upcase(department)}"
 
+  # Print badge when id is missing
   @spec print_without_id(String.t(), String.t()) :: String.t()
   defp print_without_id(name, department),
     do: "#{name} - #{String.upcase(department)}"
