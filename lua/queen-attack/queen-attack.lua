@@ -29,7 +29,11 @@ function new(pos)
     assert(pos.column <= BOARD_END, "column overflow")
 
     local self = { row = pos.row, column = pos.column }
-    self.can_attack = function(other)
+
+    ---Returns whether or not this queen can attack the given queen "other".
+    ---@param other Queen
+    ---@return boolean
+    function self.can_attack(other)
         return can_attack(self, other)
     end
 
