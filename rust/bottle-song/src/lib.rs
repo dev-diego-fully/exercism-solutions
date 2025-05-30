@@ -58,7 +58,7 @@ fn word_for<'word>(quantity: u32) -> &'word str {
 
 fn capitalized(word: &str) -> String {
     if word.is_empty() {
-        return String::from(word);
+        return String::new();
     }
     let first = match word.chars().next() {
         Some(chr) => chr.to_ascii_uppercase(),
