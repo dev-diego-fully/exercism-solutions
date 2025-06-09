@@ -1,8 +1,13 @@
-pub fn find(array: &[i32], key: i32) -> Option<usize> {
-    let (mut bot, mut top) = get_bounds(array)?;
+pub fn find<A, T>(array: A, key: T) -> Option<usize>
+where
+    A: AsRef<[T]>,
+    T: PartialEq + PartialOrd + Copy,
+{
+    let arr= array.as_ref();
+    let (mut bot, mut top) = get_bounds(arr)?;
 
     while bot <= top {
-        let (mid, element) = mid_of(array, bot, top);
+        let (mid, element) = mid_of(arr, bot, top);
 
         if *element == key {
             return Some(mid);
@@ -17,7 +22,7 @@ fn mid_of<T>(array: &[T], bot: usize, top: usize) -> (usize, &T) {
     if bot == top {
         (bot, &array[bot])
     } else {
-        let mid = (bot + top) / 2;
+        let mid = (bot + top).div_ceil(2);
         (mid, &array[mid])
     }
 }
