@@ -5,11 +5,11 @@ local is_scream, is_question, is_silence
 
 --- Bob's responses mapped to different types of input.
 local responses <const> = {
-    questions = "Sure",
+    questions = "Sure.",
     yells = "Whoa, chill out!",
     yelling_questions = "Calm down, I know what I'm doing!",
-    silences = "Fine, be that way.",
-    no_category = "Whatever"
+    silences = "Fine. Be that way!",
+    no_category = "Whatever."
 }
 
 --- Returns Bob's response to the input message.
@@ -47,7 +47,7 @@ end
 --- @param msg string The message to check.
 --- @return boolean True if the message is a question; otherwise, false.
 function is_question(msg)
-    return msg:match("%s*?$")
+    return msg:match("%?%s*$")
 end
 
 --- Returns whether the message is a shout. A message is a shout if it contains
