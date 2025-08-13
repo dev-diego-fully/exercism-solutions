@@ -8,15 +8,13 @@ local Set <const> = {}
 --- This is a factory function that creates a new table with proxied methods.
 --- @generic T The type of elements in the set.
 --- @param ... T A list of initial elements for the set.
---- @return Set<T> A new Set instance.
+--- @return Set<T> -- A new Set instance.
 function Set.new(...)
     local inner = {}
 
     for _, element in pairs({ ... }) do
         inner[element] = true
     end
-
-    --setmetatable(inner, Set)
 
     local set = {
         is_empty = proxy(Set.is_empty, inner),
@@ -38,7 +36,7 @@ end
 --- @generic T
 --- @param self Set<T> The set instance.
 --- @param element T The element to check for.
---- @return boolean True if the element is in the set, false otherwise.
+--- @return boolean -- True if the element is in the set, false otherwise.
 function Set.contains(self, element)
     return self[element] == true
 end
@@ -54,7 +52,7 @@ end
 --- Checks if the set is empty.
 --- @generic T
 --- @param self Set<T> The set instance.
---- @return boolean True if the set has no elements, false otherwise.
+--- @return boolean -- True if the set has no elements, false otherwise.
 function Set.is_empty(self)
     for _, _ in pairs(self) do
         return false
@@ -66,7 +64,7 @@ end
 --- @generic T
 --- @param self Set<T> The set instance.
 --- @param other Set<T> The other set to compare against.
---- @return boolean True if all elements of the current set are in the other set.
+--- @return boolean -- True if all elements of the current set are in the other set.
 function Set.is_subset(self, other)
     if Set.is_empty(self) then
         return true
@@ -86,7 +84,7 @@ end
 --- @generic T
 --- @param self Set<T> The set instance.
 --- @param other Set<T> The other set to compare against.
---- @return boolean True if the sets have no elements in common.
+--- @return boolean -- True if the sets have no elements in common.
 function Set.is_disjoint(self, other)
     for element, _ in pairs(self) do
         if other:contains(element) then
@@ -100,7 +98,7 @@ end
 --- @generic T
 --- @param self Set<T> The set instance.
 --- @param other Set<T> The other set to intersect with.
---- @return Set<T> A new set containing only the elements common to both sets.
+--- @return Set<T> -- A new set containing only the elements common to both sets.
 function Set.intersection(self, other)
     local inter = Set.new()
 
@@ -117,7 +115,7 @@ end
 --- @generic T
 --- @param self Set<T> The set instance.
 --- @param other Set<T> The other set to subtract.
---- @return Set<T> A new set containing elements that are in the first set but not the second.
+--- @return Set<T> -- A new set containing elements that are in the first set but not the second.
 function Set.difference(self, other)
     local diff = Set.new()
 
@@ -134,7 +132,7 @@ end
 --- @generic T
 --- @param self Set<T> The set instance.
 --- @param other Set<T> The other set to union with.
---- @return Set<T> A new set containing all unique elements from both sets.
+--- @return Set<T> -- A new set containing all unique elements from both sets.
 function Set.union(self, other)
     local union = Set.new(table.unpack(other:values()))
 
@@ -150,7 +148,7 @@ end
 --- @generic T
 --- @param self Set<T> The set instance.
 --- @param other Set<T> The other set to compare against.
---- @return boolean True if the sets are equal, false otherwise.
+--- @return boolean -- True if the sets are equal, false otherwise.
 function Set.equals(self, other)
     return Set.union(self, other)
         :difference(Set.intersection(self, other))
@@ -161,7 +159,7 @@ end
 --- The order of elements is not guaranteed.
 --- @generic T
 --- @param self Set<T> The set instance.
---- @return T[] A table containing the elements of the set.
+--- @return T[] -- A table containing the elements of the set.
 function Set.values(self)
     local vals = {}
 
@@ -175,7 +173,7 @@ end
 --- Creates a closure that acts as a proxy for a function, binding it to a specific inner table.
 --- @param fn function The function to proxy.
 --- @param inner any The inner table to which the function will be bound.
---- @return function A new function that calls the original with the inner table as the first argument.
+--- @return function -- A new function that calls the original with the inner table as the first argument.
 function proxy(fn, inner)
     return function(_, ...)
         return fn(inner, ...)
