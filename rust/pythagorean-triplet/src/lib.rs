@@ -1,3 +1,10 @@
+//! This module contains the primary logic for finding Pythagorean triplets whose sum equals a given value.
+//!
+//! The approach is based on Euclid's formula, which generates primitive triplets. The code
+//! then uses divisors of the target sum to find all non-primitive triplets as well.
+mod euclides_duplets;
+mod math;
+
 use std::collections::HashSet;
 
 /// A type alias for a tuple of three `u32` integers, representing a Pythagorean triplet.
@@ -5,40 +12,27 @@ type Triplet = [u32; 3];
 
 /// Finds all unique Pythagorean triplets (a, b, c) where a + b + c = `sum`.
 ///
-/// The function generates all possible triplets for the given `sum` and then
-/// filters them to keep only those that satisfy the Pythagorean theorem.
-/// It returns a `HashSet` to ensure that only unique triplets are included.
+/// The function first finds all divisors of the `sum`. For each divisor, it searches
+/// for primitive Pythagorean triplets whose sum, when multiplied by the divisor,
+/// matches the original `sum`.
 pub fn find(sum: u32) -> HashSet<Triplet> {
-    triplets(sum).filter(is_pythagorean).collect()
+    math::divisors_of(sum)
+        .flat_map(|divisor| triplets_for_divisor(sum, divisor))
+        .collect()
 }
 
-/// Checks if a given triplet is a Pythagorean triplet.
+/// Generates an iterator of triplets that can be scaled by a `divisor` to match the `sum`.
 ///
-/// The function returns `true` if the square of the first two elements
-/// sums to the square of the third element (`a² + b² = c²`).
-fn is_pythagorean([a, b, c]: &Triplet) -> bool {
-    a.pow(2) + b.pow(2) == c.pow(2)
+/// It finds the primitive triplets whose sum equals `sum / divisor` and then
+/// multiplies each of those triplets by the `divisor`.
+fn triplets_for_divisor(sum: u32, divisor: u32) -> impl Iterator<Item = Triplet> {
+    primitive_triplets(sum / divisor).map(move |t| math::multiply_triplet(t, divisor))
 }
 
-/// Generates an iterator over all possible `Triplet` candidates for a given sum.
+/// Generates an iterator of all primitive Pythagorean triplets whose sum is a given value.
 ///
-/// The function iterates through possible values for `a`, from 1 up to `sum / 3`,
-/// and uses `flat_map` to generate all potential triplets for each `a`.
-fn triplets(sum: u32) -> impl Iterator<Item = Triplet> {
-    (1..sum / 3).flat_map(move |a| triplets_with_a(sum, a))
-}
-
-/// Generates an iterator over all possible `Triplet` candidates for a specific `a`.
-///
-/// The function iterates through possible values for `b`, from `a + 1` up to `(sum - a) / 2`.
-/// This range ensures that `b` is greater than `a` and that `c` will be greater than `b`.
-fn triplets_with_a(sum: u32, a: u32) -> impl Iterator<Item = Triplet> {
-    (a + 1..=(sum - a) / 2).map(move |b| triplet_with_a_and_b(sum, a, b))
-}
-
-/// Creates a `Triplet` given `sum`, `a`, and `b`.
-///
-/// The third element `c` is calculated as `sum - a - b`.
-fn triplet_with_a_and_b(sum: u32, a: u32, b: u32) -> Triplet {
-    [a, b, sum - a - b]
+/// This function relies on the `euclides_duplets` module to find the generating pairs `(k, m)`
+/// and convert them into the final triplets.
+fn primitive_triplets(sum: u32) -> impl Iterator<Item = Triplet> {
+    euclides_duplets::for_pythagorean_sum(sum).map(euclides_duplets::to_pythagorean_triplet)
 }
