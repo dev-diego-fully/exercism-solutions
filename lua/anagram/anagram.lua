@@ -1,13 +1,8 @@
 --- Represents a word and can find its anagrams in a list of candidates.
 --- @class Anagram
+--- @field private _lowered string The original string converted to lowercase.
+--- @field private _normalized string The lowercase string with its characters sorted alphabetically.
 local Anagram <const> = {}
-
---- The internal representation of an Anagram object.
---- This class holds the processed string data for efficient comparisons.
---- @class PrivAnagram : Anagram
---- @field _lowered string The original string converted to lowercase.
---- @field _normalized string The lowercase string with its characters sorted alphabetically.
-local PrivAnagram <const> = {}
 
 local str_chars, str_sort
 
@@ -50,7 +45,6 @@ end
 --- @param candidate string The candidate string to check.
 --- @return boolean -- True if the candidate is an anagram, false otherwise.
 function Anagram.is_anagram(self, candidate)
-    ---@cast self PrivAnagram
     local lowered = candidate:lower()
 
     if lowered == self._lowered then
