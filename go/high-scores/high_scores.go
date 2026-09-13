@@ -1,6 +1,8 @@
 // Package highscores provides functionality for managing player scores and retrieving personal bests.
 package highscores
 
+import "slices"
+
 // HighScores represents a collection of player scores.
 type HighScores struct {
 	scores []int
@@ -52,7 +54,8 @@ func pickBest(candidate, count int, output []int) []int {
 	if len(output) < count {
 		output = append(output, candidate)
 
-		return sort(output)
+		slices.SortFunc(output, func(a, b int) int { return b - a })
+		return output
 	}
 
 	current := candidate
@@ -66,25 +69,4 @@ func pickBest(candidate, count int, output []int) []int {
 	}
 
 	return output
-}
-
-// sort sorts a slice of integers in descending order in place.
-func sort(vec []int) []int {
-	if len(vec) < 2 {
-		return vec
-	}
-
-	length := len(vec)
-
-	for i := 0; i < length-1; i++ {
-		for j := i + 1; j < length; j++ {
-			if vec[j] > vec[i] {
-				temp := vec[j]
-				vec[j] = vec[i]
-				vec[i] = temp
-			}
-		}
-	}
-
-	return vec
 }
