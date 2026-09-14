@@ -1,5 +1,5 @@
 // Package brackets provides functionality to verify whether brackets in a string are correctly paired and nested.
-package brackets
+package matchingbrackets
 
 import "slices"
 
